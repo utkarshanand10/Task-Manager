@@ -11,8 +11,11 @@ const CalendarView = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [editData, setEditData] = useState(null);
   const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks.tasks);
+  console.log("All Tasks:", tasks);
 
   const onSelect = (value) => {
+    console.log(value);
     setSelectedDate(value.format("YYYY-MM-DD"));
     setEditData(null);
     setFormVisible(true);
@@ -29,7 +32,13 @@ const CalendarView = () => {
 
   return (
     <div>
-      <Calendar fullscreen={false} onSelect={onSelect} />
+      <Calendar
+        onSelect={(date, { source }) => {
+          if (source === "date") {
+            onSelect(date);
+          }
+        }}
+      />
       <TaskForm
         visible={formVisible}
         onCreate={handleCreate}

@@ -12,37 +12,48 @@ const categoryColors = {
 
 const TaskList = ({ selectedDate, onEdit }) => {
   const dispatch = useDispatch();
-  const tasks = useSelector((state) =>
-    selectedDate ? state.tasks.tasks.filter((t) => t.date === selectedDate) : []
-  );
+  const allTasks = useSelector((state) => state.tasks.tasks);
+
+  const tasksToDisplay = allTasks;
 
   return (
     <Card
-      title={`Tasks on ${selectedDate || "No Date Selected"}`}
+      title={
+        selectedDate
+          ? `Tasks on ${selectedDate}`
+          : "All Tasks (No Date Selected)"
+      }
       style={{ marginTop: 20 }}
     >
-      <List
-        dataSource={tasks}
-        renderItem={(task) => (
-          <List.Item
-            actions={[
-              <Button type="link" onClick={() => onEdit(task)}>
-                Edit
-              </Button>,
-              <Button
-                type="link"
-                danger
-                onClick={() => dispatch(deleteTask(task.id))}
-              >
-                Delete
-              </Button>,
-            ]}
-          >
-            <List.Item.Meta title={task.title} description={task.description} />
-            <Tag color={categoryColors[task.category]}>{task.category}</Tag>
-          </List.Item>
-        )}
-      />
+      {tasksToDisplay.length === 0 ? (
+        <p>No tasks available.</p>
+      ) : (
+        <List
+          dataSource={tasksToDisplay}
+          renderItem={(task) => (
+            <List.Item
+              actions={[
+                <Button type="link" onClick={() => onEdit(task)}>
+                  Edit
+                </Button>,
+                <Button
+                  type="link"
+                  danger
+                  onClick={() => dispatch(deleteTask(task.id))}
+                >
+                  Delete
+                </Button>,
+              ]}
+            >
+              <List.Item.Meta
+                title={`${task.title} (${task.date})`}
+                description={task.description}
+              />
+              <Tag color={categoryColors[task.category]}>{task.category}</Tag>
+            </List.Item>
+          )}
+        />
+      )}
     </Card>
   );
 };

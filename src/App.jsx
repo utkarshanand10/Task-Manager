@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState } from "react";
 import { Layout, Row, Col, Typography } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
@@ -56,10 +55,10 @@ function App() {
               onOpenModal={handleOpenModal}
             />
             <div style={{ marginTop: "24px" }}>
-              <TaskList
+              {/* <TaskList
                 selectedDate={selectedDate}
                 onEditTask={handleEditTask}
-              />
+              /> */}
             </div>
           </Col>
 

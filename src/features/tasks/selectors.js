@@ -23,20 +23,17 @@ export const selectTaskCountsByCategory = createSelector(
   }
 );
 
-// Selector for getting unique dates with tasks
 export const selectTaskDates = createSelector([selectTasks], (tasks) => {
   const dates = new Set();
   tasks.forEach((task) => dates.add(task.date));
   return Array.from(dates).sort();
 });
 
-// Selector for getting tasks by category
 export const selectTasksByCategory = createSelector(
   [selectTasks, (_, category) => category],
   (tasks, category) => tasks.filter((task) => task.category === category)
 );
 
-// Selector for getting recent tasks
 export const selectRecentTasks = createSelector([selectTasks], (tasks) =>
   [...tasks]
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
