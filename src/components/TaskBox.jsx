@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteTask } from "../features/tasks/taskSlice";
 import { Card, List, Button, Tag } from "antd";
+import { deleteTask } from "../features/tasks/taskSlice";
+import { selectAllTasks } from "../features/tasks/taskSelectors";
 
 const categoryColors = {
   success: "green",
@@ -10,19 +11,14 @@ const categoryColors = {
   info: "blue",
 };
 
-const TaskList = ({ selectedDate, onEdit }) => {
+const TaskBox = ({ onEdit }) => {
   const dispatch = useDispatch();
-  const tasks = useSelector((state) =>
-    selectedDate ? state.tasks.tasks.filter((t) => t.date === selectedDate) : []
-  );
+  const allTasks = useSelector(selectAllTasks);
 
   return (
-    <Card
-      title={`Tasks on ${selectedDate || "No Date Selected"}`}
-      style={{ marginTop: 20 }}
-    >
+    <Card title="All Tasks" style={{ marginTop: 20 }}>
       <List
-        dataSource={tasks}
+        dataSource={allTasks}
         renderItem={(task) => (
           <List.Item
             actions={[
@@ -38,7 +34,10 @@ const TaskList = ({ selectedDate, onEdit }) => {
               </Button>,
             ]}
           >
-            <List.Item.Meta title={task.title} description={task.description} />
+            <List.Item.Meta
+              title={`${task.title} (${task.date})`}
+              description={task.description}
+            />
             <Tag color={categoryColors[task.category]}>{task.category}</Tag>
           </List.Item>
         )}
@@ -47,4 +46,4 @@ const TaskList = ({ selectedDate, onEdit }) => {
   );
 };
 
-export default TaskList;
+export default TaskBox;

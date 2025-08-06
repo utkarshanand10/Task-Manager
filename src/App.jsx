@@ -1,38 +1,56 @@
-import React, { useState } from "react";
-import { Layout, Typography, Divider } from "antd";
+// src/App.jsx
+import { useState } from "react";
+import { Layout, Row, Col } from "antd";
+import dayjs from "dayjs";
 import CalendarView from "./components/CalendarView";
 import TaskList from "./components/TaskList";
 import TaskChart from "./components/TaskChart";
-import AllTasksBox from "./components/AllTasksBox";
+import TaskForm from "./components/TaskForm";
 
-const { Header, Content, Footer } = Layout;
-const { Title } = Typography;
+const { Content } = Layout;
 
-const App = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
+function App() {
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs().format("YYYY-MM-DD")
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState(null);
+
+  const handleDateSelect = (date) => setSelectedDate(date);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setTaskToEdit(null);
+  };
+  const handleEditTask = (task) => {
+    setTaskToEdit(task);
+    setIsModalOpen(true);
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Header style={{ backgroundColor: "#001529", padding: "10px 24px" }}>
-        <Title style={{ color: "#fff", margin: 0 }} level={3}>
-          📝 Task Manager
-        </Title>
-      </Header>
-
       <Content style={{ padding: "24px" }}>
-        <CalendarView onDateSelect={setSelectedDate} />
-        <Divider />
-        {selectedDate && <TaskList selectedDate={selectedDate} />}
-        <Divider />
-        <TaskChart />
-        <AllTasksBox />
-      </Content>
+        <Row gutter={[24, 24]}>
+          <Col xs={24} md={12}>
+            <CalendarView
+              onDateSelect={handleDateSelect}
+              onOpenModal={handleOpenModal}
+            />
+            <TaskList selectedDate={selectedDate} onEditTask={handleEditTask} />
+          </Col>
+          <Col xs={24} md={12}>
+            <TaskChart />
+          </Col>
+        </Row>
 
-      <Footer style={{ textAlign: "center" }}>
-        Task Manager ©2025 Created by Utkarsh
-      </Footer>
+        <TaskForm
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
+          selectedDate={selectedDate}
+          taskToEdit={taskToEdit}
+        />
+      </Content>
     </Layout>
   );
-};
+}
 
 export default App;

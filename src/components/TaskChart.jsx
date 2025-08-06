@@ -1,92 +1,89 @@
-import { useSelector } from "react-redux";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import { Card, Typography, Select, Row, Col } from "antd";
-import { useState } from "react";
-import { selectTaskCountsByCategory } from "../features/tasks/selectors";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Pie } from "react-chartjs-2";
+import { Card, Select, Button } from "antd";
+import { setFilters, resetFilters } from "../features/tasks/taskSlice";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-const { Title } = Typography;
-const { Option } = Select;
-
-const COLORS = {
-  success: "#52c41a",
-  warning: "#faad14",
-  issue: "#ff4d4f",
-  info: "#1890ff",
-};
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const TaskChart = () => {
-  const tasks = useSelector((state) => state.tasks.items); // ✅ always inside component
-  const counts = useSelector(selectTaskCountsByCategory); // ✅ moved here
-  const [filter, setFilter] = useState(null);
+  const dispatch = useDispatch();
+  const { tasks, filters } = useSelector((state) => state.tasks);
 
-  const filteredTasks = filter
-    ? tasks.filter((task) => task.category === filter)
+  const filteredTasks = filters.category
+    ? tasks.filter((t) => t.category === filters.category)
     : tasks;
 
-  const data = Object.keys(COLORS)
-    .map((cat) => ({
-      name: cat,
-      value: filteredTasks.filter((task) => task.category === cat).length,
-    }))
-    .filter((item) => item.value > 0);
+  const categoryCounts = filteredTasks.reduce((acc, task) => {
+    acc[task.category] = (acc[task.category] || 0) + 1;
+    return acc;
+  }, {});
+
+  const chartData = {
+    labels: Object.keys(categoryCounts),
+    datasets: [
+      {
+        label: "# of Tasks",
+        data: Object.values(categoryCounts),
+        backgroundColor: ["#4caf50", "#ff9800", "#f44336", "#2196f3"],
+        borderColor: "#fff",
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          color: "#333",
+          font: {
+            size: 14,
+            weight: "500",
+          },
+        },
+      },
+      tooltip: {
+        backgroundColor: "#333",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+      },
+    },
+  };
 
   return (
-    <Card bordered style={{ maxWidth: 600, margin: "auto" }}>
-      <Row justify="space-between" align="middle" style={{ marginBottom: 16 }}>
-        <Col>
-          <Title level={4} style={{ margin: 0 }}>
-            📊 Task Category Distribution
-          </Title>
-        </Col>
-        <Col>
-          <Select
-            value={filter || ""}
-            onChange={(value) => setFilter(value)}
-            placeholder="Filter by category"
-            style={{ width: 180 }}
-            allowClear
-          >
-            <Option value="">All</Option>
-            <Option value="success">Success</Option>
-            <Option value="warning">Warning</Option>
-            <Option value="issue">Issue</Option>
-            <Option value="info">Info</Option>
-          </Select>
-        </Col>
-      </Row>
-
-      {data.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No data to display</p>
-      ) : (
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              dataKey="value"
-              data={data}
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              label={({ name, percent }) =>
-                `${name} (${(percent * 100).toFixed(0)}%)`
-              }
-              isAnimationActive={true}
-            >
-              {data.map((entry) => (
-                <Cell key={entry.name} fill={COLORS[entry.name]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend verticalAlign="bottom" height={36} />
-          </PieChart>
-        </ResponsiveContainer>
-      )}
+    <Card
+      title="Task Chart"
+      style={{
+        marginTop: 20,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        padding: 20,
+        background: "#fff",
+        borderRadius: 12,
+      }}
+    >
+      <div style={{ marginBottom: 20 }}>
+        <Select
+          placeholder="Filter by category"
+          style={{ width: 200, marginRight: 10 }}
+          value={filters.category || undefined}
+          onChange={(value) => dispatch(setFilters({ category: value }))}
+          allowClear
+        >
+          <Select.Option value="success">Success</Select.Option>
+          <Select.Option value="warning">Warning</Select.Option>
+          <Select.Option value="issue">Issue</Select.Option>
+          <Select.Option value="info">Info</Select.Option>
+        </Select>
+        <Button onClick={() => dispatch(resetFilters())}>Reset Filter</Button>
+      </div>
+      <div style={{ height: 300 }}>
+        <Pie data={chartData} options={options} />
+      </div>
     </Card>
   );
 };
