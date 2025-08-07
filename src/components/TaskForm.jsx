@@ -13,7 +13,7 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
       initialValues={{
         title: initialValues?.title || "",
         description: initialValues?.description || "",
-        category: initialValues?.category || "info",
+        category: initialValues?.category || "",
       }}
       validationSchema={Yup.object({
         title: Yup.string().required("Title is required"),

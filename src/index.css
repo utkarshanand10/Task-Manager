@@ -1,5 +1,3 @@
-/* src/main.css */
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -21,4 +19,9 @@ code {
 
 .ant-card {
   margin-bottom: 1rem;
+}
+.events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
