@@ -15,11 +15,13 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
         description: initialValues?.description || "",
         category: initialValues?.category || "",
       }}
+      enableReinitialize // ✅ resets the form when initialValues change
       validationSchema={Yup.object({
         title: Yup.string().required("Title is required"),
       })}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         onCreate({ ...initialValues, ...values });
+        resetForm(); // ✅ clears the form after submit
       }}
     >
       {({ values, errors, handleChange, handleSubmit, setFieldValue }) => (
@@ -27,7 +29,9 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
           title={isEditing ? "Edit Task" : "Add Task"}
           open={visible}
           onOk={handleSubmit}
-          onCancel={onCancel}
+          onCancel={() => {
+            onCancel();
+          }}
           okText={isEditing ? "Update" : "Add"}
         >
           <Form layout="vertical">
@@ -53,6 +57,7 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
 
             <Form.Item label="Category">
               <Select
+                placeholder="Select category"
                 value={values.category}
                 onChange={(val) => setFieldValue("category", val)}
               >

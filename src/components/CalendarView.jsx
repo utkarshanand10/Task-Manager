@@ -28,6 +28,7 @@ const CalendarView = () => {
     } else {
       dispatch(addTask({ ...task, date: selectedDate }));
     }
+
     setFormVisible(false);
     setEditData(null);
   };
@@ -35,15 +36,15 @@ const CalendarView = () => {
   const getColor = (category) => {
     switch (category) {
       case "success":
-        return "#52c41a"; // green
+        return "#52c41a";
       case "warning":
-        return "#faad14"; // yellow
+        return "#faad14";
       case "issue":
-        return "#f5222d"; // red
+        return "#f5222d";
       case "info":
-        return "#1890ff"; // blue
+        return "#1890ff";
       default:
-        return "#d9d9d9"; // gray
+        return "#d9d9d9";
     }
   };
 
@@ -89,7 +90,6 @@ const CalendarView = () => {
         }}
       />
 
-      {/* Optional: Legend below calendar */}
       <div
         style={{
           display: "flex",
@@ -115,14 +115,18 @@ const CalendarView = () => {
       <TaskForm
         visible={formVisible}
         onCreate={handleCreate}
-        onCancel={() => setFormVisible(false)}
+        onCancel={() => {
+          setFormVisible(false);
+          setEditData(null); // ✅ Clear old data on cancel
+        }}
         initialValues={editData}
       />
+
       <TaskList
         selectedDate={selectedDate}
         onEdit={(task) => {
           setSelectedDate(task.date);
-          setEditData(task);
+          setEditData(task); // ✅ Load data for editing
           setFormVisible(true);
         }}
       />
@@ -130,7 +134,6 @@ const CalendarView = () => {
   );
 };
 
-// Reusable style for legend dots
 const legendDotStyle = (color) => ({
   display: "inline-block",
   width: 10,
