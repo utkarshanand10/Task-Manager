@@ -20,13 +20,22 @@ const TaskChart = () => {
     return acc;
   }, {});
 
+  const categoryColors = {
+    success: "#4caf50", // Green
+    warning: "#ff9800", // Orange
+    issue: "#f44336", // Red
+    info: "#2196f3", // Blue
+  };
+
   const chartData = {
     labels: Object.keys(categoryCounts),
     datasets: [
       {
         label: "# of Tasks",
         data: Object.values(categoryCounts),
-        backgroundColor: ["#4caf50", "#ff9800", "#f44336", "#2196f3"],
+        backgroundColor: Object.keys(categoryCounts).map(
+          (cat) => categoryColors[cat] || "#9e9e9e" // fallback gray
+        ),
         borderColor: "#fff",
         borderWidth: 2,
       },
@@ -64,6 +73,9 @@ const TaskChart = () => {
         padding: 20,
         background: "#fff",
         borderRadius: 12,
+        maxWidth: 1000,
+        marginLeft: "auto",
+        marginRight: "auto",
       }}
     >
       <div style={{ marginBottom: 20 }}>
@@ -81,7 +93,8 @@ const TaskChart = () => {
         </Select>
         <Button onClick={() => dispatch(resetFilters())}>Reset Filter</Button>
       </div>
-      <div style={{ height: 300 }}>
+
+      <div style={{ height: 200 }}>
         <Pie data={chartData} options={options} />
       </div>
     </Card>

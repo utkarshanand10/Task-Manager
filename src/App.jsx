@@ -17,10 +17,12 @@ function App() {
   const [taskToEdit, setTaskToEdit] = useState(null);
 
   const handleDateSelect = (date) => setSelectedDate(date);
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
     setTaskToEdit(null);
   };
+
   const handleEditTask = (task) => {
     setTaskToEdit(task);
     setIsModalOpen(true);
@@ -28,7 +30,6 @@ function App() {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      {/* Header */}
       <Header
         style={{
           background: "#001529",
@@ -45,30 +46,20 @@ function App() {
         </Typography.Title>
       </Header>
 
-      {/* Main Content */}
       <Content style={{ padding: "32px" }}>
         <Row gutter={[32, 32]}>
-          {/* Calendar + Task List */}
-          <Col xs={24} md={12}>
+          <Col xs={24} md={14}>
             <CalendarView
               onDateSelect={handleDateSelect}
               onOpenModal={handleOpenModal}
             />
-            <div style={{ marginTop: "24px" }}>
-              {/* <TaskList
-                selectedDate={selectedDate}
-                onEditTask={handleEditTask}
-              /> */}
-            </div>
           </Col>
 
-          {/* Chart */}
-          <Col xs={24} md={12}>
+          <Col xs={24} md={10}>
             <TaskChart />
           </Col>
         </Row>
 
-        {/* Modal */}
         <TaskForm
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}

@@ -1,10 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-// Base selectors
 export const selectTasks = (state) => state.tasks.items;
 export const selectTaskStatus = (state) => state.tasks.status;
 
-// Memoized selectors
 export const selectTasksByDate = createSelector(
   [selectTasks, (_, date) => date],
   (tasks, date) => tasks.filter((task) => task.date === date)

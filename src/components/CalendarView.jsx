@@ -80,15 +80,27 @@ const CalendarView = () => {
   };
 
   return (
-    <div>
-      <Calendar
-        dateCellRender={dateCellRender}
-        onSelect={(date, { source }) => {
-          if (source === "date") {
-            onSelect(date);
-          }
+    <div style={{ padding: "24px" }}>
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "24px",
+          background: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
         }}
-      />
+      >
+        <Calendar
+          dateCellRender={dateCellRender}
+          onSelect={(date, { source }) => {
+            if (source === "date") {
+              onSelect(date);
+            }
+          }}
+          fullscreen={true}
+        />
+      </div>
 
       <div
         style={{
@@ -117,7 +129,7 @@ const CalendarView = () => {
         onCreate={handleCreate}
         onCancel={() => {
           setFormVisible(false);
-          setEditData(null); // ✅ Clear old data on cancel
+          setEditData(null);
         }}
         initialValues={editData}
       />
@@ -126,7 +138,7 @@ const CalendarView = () => {
         selectedDate={selectedDate}
         onEdit={(task) => {
           setSelectedDate(task.date);
-          setEditData(task); // ✅ Load data for editing
+          setEditData(task);
           setFormVisible(true);
         }}
       />

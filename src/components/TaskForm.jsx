@@ -15,13 +15,13 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
         description: initialValues?.description || "",
         category: initialValues?.category || "",
       }}
-      enableReinitialize // ✅ resets the form when initialValues change
+      enableReinitialize //
       validationSchema={Yup.object({
         title: Yup.string().required("Title is required"),
       })}
       onSubmit={(values, { resetForm }) => {
         onCreate({ ...initialValues, ...values });
-        resetForm(); // ✅ clears the form after submit
+        resetForm();
       }}
     >
       {({ values, errors, handleChange, handleSubmit, setFieldValue }) => (
