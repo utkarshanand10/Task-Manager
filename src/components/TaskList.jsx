@@ -90,7 +90,7 @@ const TaskList = ({ selectedDate, onEdit }) => {
           renderItem={(task) => (
             <List.Item
               style={{
-                padding: "20px",
+                paddingLeft: "40px",
                 background: "white",
                 borderRadius: "10px",
                 marginTop: "10px",
