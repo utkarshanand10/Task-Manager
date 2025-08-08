@@ -109,7 +109,7 @@ const TaskList = ({ selectedDate, onEdit }) => {
               ]}
             >
               <div style={{ width: "100%" }}>
-                <h4 style={{ fontWeight: "bold" }}>Task on {task.date}</h4>
+                <h4 style={{ fontWeight: "bold" }}>{task.date}</h4>
                 <List.Item.Meta
                   title={task.title}
                   description={task.description}
