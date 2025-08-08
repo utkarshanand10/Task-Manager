@@ -3,7 +3,6 @@ import { Layout, Row, Col, Typography } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import CalendarView from "./components/CalendarView";
-import TaskList from "./components/TaskList";
 import TaskChart from "./components/TaskChart";
 import TaskForm from "./components/TaskForm";
 
