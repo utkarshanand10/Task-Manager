@@ -35,7 +35,6 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
         handleChange,
         handleSubmit,
         setFieldValue,
-        isValid,
         resetForm,
         setTouched,
       }) => {
@@ -58,7 +57,6 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
             okText={isEditing ? "Update" : "Add"}
             okButtonProps={{
               type: "primary",
-              disabled: !isValid,
             }}
           >
             <Form layout="vertical">

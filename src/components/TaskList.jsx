@@ -17,7 +17,6 @@ const TaskList = ({ selectedDate, onEdit }) => {
 
   const [sortByLatest, setSortByLatest] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  // Apply filters
   let tasksToDisplay = [...allTasks];
 
   if (selectedCategory) {
@@ -26,7 +25,6 @@ const TaskList = ({ selectedDate, onEdit }) => {
     );
   }
 
-  // Sort by date
   tasksToDisplay.sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
