@@ -18,6 +18,7 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
       enableReinitialize //
       validationSchema={Yup.object({
         title: Yup.string().required("Title is required"),
+        category: Yup.string().required("Category is Requred"),
       })}
       onSubmit={(values, { resetForm }) => {
         onCreate({ ...initialValues, ...values });
@@ -36,6 +37,7 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
         >
           <Form layout="vertical">
             <Form.Item
+              required
               label="Title"
               validateStatus={errors.title && "error"}
               help={errors.title}
@@ -55,7 +57,12 @@ const TaskForm = ({ visible, onCreate, onCancel, initialValues }) => {
               />
             </Form.Item>
 
-            <Form.Item label="Category">
+            <Form.Item
+              required
+              label="Category"
+              validateStatus={errors.category ? "error" : ""}
+              help={errors.category}
+            >
               <Select
                 placeholder="Select category"
                 value={values.category}

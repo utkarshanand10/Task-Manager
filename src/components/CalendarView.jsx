@@ -80,12 +80,11 @@ const CalendarView = () => {
   };
 
   return (
-    <div style={{ padding: "24px" }}>
+    <div>
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "24px",
           background: "#fff",
           borderRadius: "8px",
           boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
@@ -98,7 +97,7 @@ const CalendarView = () => {
               onSelect(date);
             }
           }}
-          fullscreen={true}
+          fullscreen={false}
         />
       </div>
 

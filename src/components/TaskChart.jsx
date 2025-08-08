@@ -68,7 +68,6 @@ const TaskChart = () => {
     <Card
       title="Task Chart"
       style={{
-        marginTop: 20,
         boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
         padding: 20,
         background: "#fff",

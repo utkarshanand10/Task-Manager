@@ -46,7 +46,7 @@ function App() {
         </Typography.Title>
       </Header>
 
-      <Content style={{ padding: "32px" }}>
+      <Content style={{ background: "#edf6ffff", padding: "24px" }}>
         <Row gutter={[32, 32]}>
           <Col xs={24} md={14}>
             <CalendarView
